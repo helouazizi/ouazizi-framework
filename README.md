@@ -3,7 +3,7 @@
 ## Structure
 
 - `src/`:  mini-framework source code (vanilla JS)
-- `app/`: user application code, imports the framework from `dist/`
+- `app/`: user application code, imports the framework from `src/`
 
 ## How to run
 
