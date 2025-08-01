@@ -1,9 +1,10 @@
+// src/core/dom.js
 import { GlobalEvents } from './events.js';
 
 export class Renderer {
     constructor() {
         this.eventIdCounter = 0;
-        this.oldVtree = null
+        this.oldVtree = null;
         this._setupGlobalListeners();
     }
 
@@ -11,7 +12,7 @@ export class Renderer {
         const eventTypes = ['click', 'input', 'change', 'submit', 'keydown', 'dblclick', 'blur'];
 
         eventTypes.forEach(eventType => {
-            const useCapture = eventType === 'blur'; // only `blur` needs capture
+            const useCapture = eventType === 'blur';
             document.addEventListener(eventType, (e) => {
                 const target = e.target;
                 const handlerId = target.getAttribute(`data-event-${eventType}`);
@@ -24,6 +25,7 @@ export class Renderer {
 
     _createElement(vnode) {
         if (typeof vnode === 'string') return document.createTextNode(vnode);
+        if (!vnode.tag) return document.createTextNode('');
 
         const el = document.createElement(vnode.tag);
 
@@ -33,21 +35,31 @@ export class Renderer {
                 const handlerId = `evt-${eventType}-${this.eventIdCounter++}`;
                 GlobalEvents.on(handlerId, value);
                 el.setAttribute(`data-event-${eventType}`, handlerId);
-            } else {
+            }
+            else if (attr === 'checked') {
+                el.attr = !!value;
+            }
+            else if (attr === 'disabled') {
+                el[attr] = !!value;
+            }
+            else if (attr === 'selected') {
+                el[attr] = !!value;
+            }
+            else {
                 el.setAttribute(attr, value);
             }
         }
 
+
         if (vnode.children) {
-            vnode.children.forEach(child => {
-                el.appendChild(this._createElement(child));
-            });
+            vnode.children.forEach(child => el.appendChild(this._createElement(child)));
         }
 
         if (vnode.text) {
             el.appendChild(document.createTextNode(vnode.text));
         }
-        vnode.el = el; // save reference
+
+        vnode.el = el;
         return el;
     }
 
@@ -56,7 +68,6 @@ export class Renderer {
         if (!root) return;
 
         if (!this.oldVtree) {
-            // Initial render: create and append real DOM
             root.innerHTML = '';
             this.rootElement = this._createElement(vtree);
             root.appendChild(this.rootElement);
@@ -66,8 +77,8 @@ export class Renderer {
             this.oldVtree = vtree;
         }
     }
+
     _patch(parent, newNode, oldNode) {
-        const existingDomNode = oldNode?.el; // use stored DOM reference
 
         if (!oldNode) {
             if (newNode) {
@@ -75,97 +86,167 @@ export class Renderer {
                 parent.appendChild(newEl);
                 newNode.el = newEl;
             }
-        } else if (!newNode) {
-            if (existingDomNode && existingDomNode.parentNode === parent) {
-                parent.removeChild(existingDomNode);
+            return;
+        }
+
+        if (!newNode) {
+            this._cleanupEventAttributes(oldNode);
+            if (oldNode.el && oldNode.el.parentNode === parent) {
+                parent.removeChild(oldNode.el);
             }
-        } else if (this._changed(newNode, oldNode)) {
+            return;
+        }
+
+        if (typeof newNode === 'string' || typeof oldNode === 'string') {
+            if (newNode !== oldNode) {
+                const newEl = this._createElement(newNode);
+                if (oldNode.el && oldNode.el.parentNode === parent) {
+                    parent.replaceChild(newEl, oldNode.el);
+                } else {
+                    parent.appendChild(newEl);
+                }
+                if (typeof newNode !== 'string') newNode.el = newEl;
+            } else {
+                newNode.el = oldNode.el;
+            }
+            return;
+        }
+
+        // Replace if tag or key changed
+        if (newNode.tag !== oldNode.tag || newNode.attrs?.key !== oldNode.attrs?.key) {
             const newEl = this._createElement(newNode);
-            this._cleanupEventAttributes(oldNode); // Clean up old event handlers
-            if (existingDomNode && existingDomNode.parentNode === parent) {
-                parent.replaceChild(newEl, existingDomNode);
+            this._cleanupEventAttributes(oldNode);
+            if (oldNode.el && oldNode.el.parentNode === parent) {
+                parent.replaceChild(newEl, oldNode.el);
             } else {
                 parent.appendChild(newEl);
             }
             newNode.el = newEl;
-        } else if (typeof newNode !== 'string' && newNode.tag) {
-            newNode.el = existingDomNode;
-            this._updateAttributes(existingDomNode, newNode.attrs || {}, oldNode.attrs || {});
-            const newLen = newNode.children?.length || 0;
-            const oldLen = oldNode.children?.length || 0;
+            return;
+        }
 
-            for (let i = 0; i < newLen || i < oldLen; i++) {
-                this._patch(existingDomNode, newNode.children?.[i], oldNode.children?.[i]);
+        // In-place update
+        const el = (newNode.el = oldNode.el);
+
+        this._updateAttributes(el, newNode.attrs || {}, oldNode.attrs || {});
+
+        // Children patching with keyed diffing
+        const newChildren = newNode.children || [];
+        const oldChildren = oldNode.children || [];
+
+        const oldKeyed = new Map();
+        const oldUnkeyed = [];
+
+        // Build maps for old children
+        oldChildren.forEach((child, index) => {
+            const key = child?.attrs?.key;
+            if (key != null) {
+                oldKeyed.set(key, child);
+            } else {
+                oldUnkeyed.push({ child, index });
             }
-        } else if (typeof newNode === 'string' && typeof oldNode === 'string') {
-            if (existingDomNode && newNode !== oldNode) {
-                existingDomNode.textContent = newNode;
+        });
+
+        const usedOldIndices = new Set();
+
+        //  Map new children to old indices or -1
+        const newIndexToOldIndexMap = new Array(newChildren.length);
+        const newChildrenWithOldIndex = [];
+
+        newChildren.forEach((newChild, i) => {
+            const key = newChild?.attrs?.key;
+            if (key != null && oldKeyed.has(key)) {
+                const oldChild = oldKeyed.get(key);
+                const oldIndex = oldChildren.indexOf(oldChild);
+                newIndexToOldIndexMap[i] = oldIndex;
+                oldKeyed.delete(key);
+                newChildrenWithOldIndex.push({ newChild, newIndex: i, oldIndex });
+                usedOldIndices.add(oldIndex);
+            } else if (oldUnkeyed.length > 0) {
+                const entry = oldUnkeyed.shift();
+                newIndexToOldIndexMap[i] = entry.index;
+                newChildrenWithOldIndex.push({ newChild, newIndex: i, oldIndex: entry.index });
+                usedOldIndices.add(entry.index);
+            } else {
+                newIndexToOldIndexMap[i] = -1; // new node
+                newChildrenWithOldIndex.push({ newChild, newIndex: i, oldIndex: -1 });
             }
+        });
+
+        // Patch all children
+        newChildrenWithOldIndex.forEach(({ newChild, oldIndex }) => {
+            const oldChild = oldIndex !== -1 ? oldChildren[oldIndex] : null;
+            this._patch(el, newChild, oldChild);
+        });
+
+        //  Insert new nodes only (skip moving existing nodes)
+        for (let i = 0; i < newChildren.length; i++) {
+            if (newIndexToOldIndexMap[i] === -1) {
+                const newChild = newChildren[i];
+                const domChild = newChild.el;
+                const refNode = el.childNodes[i] || null;
+                el.insertBefore(domChild, refNode);
+            }
+        }
+
+        // Remove leftover old keyed nodes not matched
+        oldKeyed.forEach(oldChild => this._patch(el, null, oldChild));
+
+        // Remove leftover old unkeyed nodes not matched
+        oldUnkeyed.forEach(({ child, index }) => {
+            if (!usedOldIndices.has(index)) {
+                this._patch(el, null, child);
+            }
+        });
+
+        if (newNode.text !== oldNode.text) {
+            el.textContent = newNode.text || '';
         }
     }
 
-    _updateAttributes(domElement, newAttrs, oldAttrs) {
-        // Remove old attrs not present in newAttrs
+
+    _updateAttributes(el, newAttrs, oldAttrs) {
+        // Remove old attributes not in newAttrs
         for (const key of Object.keys(oldAttrs)) {
             if (!(key in newAttrs)) {
-                domElement.removeAttribute(key);
+                el.removeAttribute(key);
             }
         }
 
-        // Set/update new attrs
+        // Add/update new attributes (except event handlers)
         for (const [key, value] of Object.entries(newAttrs)) {
-            if (key.startsWith('on')) {
-                // Event handlers are handled globally, so ignore here
-                continue;
+            if (key.startsWith('on')) continue;
+            else if (key === 'checked') {
+                el[key] = !!value;
             }
-            const oldValue = oldAttrs[key];
-            if (String(oldValue) !== String(value)) {
-                domElement.setAttribute(key, value);
+            else if (key === 'disabled') {
+                el[key] = !!value;
             }
+            else if (key === 'selected') {
+                el[key] = !!value;
+            }
+            else {
+                el.setAttribute(key, value);
+            }
+
         }
-    }
-
-    _changed(node1, node2) {
-        if (typeof node1 !== typeof node2) return true;
-
-        if (typeof node1 === 'string' && node1 !== node2) return true;
-
-        if (node1.tag !== node2.tag) return true;
-
-        if ((node1.attrs && node1.attrs.key) !== (node2.attrs && node2.attrs.key)) return true;
-
-        const filterAttrs = (attrs) =>
-            Object.fromEntries(Object.entries(attrs || {}).filter(([k]) => !k.startsWith('on')));
-
-        const attrs1 = filterAttrs(node1.attrs);
-        const attrs2 = filterAttrs(node2.attrs);
-
-        const keys1 = Object.keys(attrs1);
-        const keys2 = Object.keys(attrs2);
-        if (keys1.length !== keys2.length) return true;
-
-        for (const key of keys1) {
-            if (String(attrs1[key]) !== String(attrs2[key])) return true;
-        }
-
-        if ((node1.text || '') !== (node2.text || '')) return true;
-
-        return false;
     }
 
     _cleanupEventAttributes(vnode) {
         if (!vnode?.attrs) return;
-
         for (const [attr, value] of Object.entries(vnode.attrs)) {
             if (attr.startsWith('on') && typeof value === 'function') {
                 const eventType = attr.slice(2).toLowerCase();
-                const handlerId = vnode.el?.getAttribute(`data-event-${eventType}`);
-                if (handlerId) {
-                    GlobalEvents.off(handlerId, value);
+                const el = vnode.el;
+                if (el && el.hasAttribute(`data-event-${eventType}`)) {
+                    const handlerId = el.getAttribute(`data-event-${eventType}`);
+                    GlobalEvents.off(handlerId);
+                    el.removeAttribute(`data-event-${eventType}`);
                 }
             }
         }
+        if (vnode.children) {
+            vnode.children.forEach(child => this._cleanupEventAttributes(child));
+        }
     }
-
-
 }
