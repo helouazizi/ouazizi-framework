@@ -1,32 +1,32 @@
-import { Footer } from './Footer.js';
-import { Header } from './Header.js';
+// Counter.js
+import { useState } from "../../src/index.js"
 
-export function Home(state) {
-  const message = state.get('message');
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  const [name, setName] = useState('Guest')
 
   return {
     tag: 'div',
-    attrs: { class: 'home' },
     children: [
-      Header(state),
+      { tag: 'h1', text: `Hello, ${name}` },
+      { tag: 'p', text: `Count: ${count}` },
       {
-        tag: 'main',
-        attrs: { class: 'main' },
-        children: [
-          {
-            tag: 'h1',
-            attrs: { class: '' },
-            text: 'Welcome to the Home Page'
-          },
-          {
-            tag: 'p',
-            attrs: { class: 'main p' },
-            text: message
-          }
-        ]
+        tag: 'button',
+        text: 'Increment',
+        attrs: {
+          onClick: () => setCount(count + 1)
+        }
       },
-
-      Footer(state)
+      {
+        tag: 'input',
+        attrs: {
+          placeholder: 'Enter name',
+          value: name,
+          onchange: (e) => setName(e.target.value)
+        }
+      }
     ]
-  };
+  }
 }
+

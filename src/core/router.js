@@ -1,21 +1,27 @@
-// src/core/router.js
-export class Router {
-  constructor(routes = {}) {
-    this.routes = routes;
-    window.addEventListener('hashchange', () => this.load(location.hash));
+// router.js
+
+import { Render } from "./render.js"
+
+export function Routing(container, routes) {
+  function getCurrentPath() {
+    return location.hash.slice(1) || "/"
   }
 
-  load(hash) {
-    const path = hash.replace(/^#/, '') || '/';
-    const view = this.routes[path];
-    if (view && typeof view === 'function') {
-      view();
+  function handleRouteChange() {
+    const path = getCurrentPath()
+    const Component = routes[path]
+    if (Component) {
+      Render(container, Component)
     } else {
-      console.error(`Route "${path}" not found`);
+      // If no fallback route defined
+      container.innerHTML = `<h1>404 Not Found</h1>`
     }
   }
 
-  init() {
-    this.load(location.hash);
-  }
+  // Listen to hash changes
+  window.addEventListener("hashchange", handleRouteChange)
+  window.addEventListener("DOMContentLoaded", handleRouteChange)
+
+  // Initial route render
+  handleRouteChange()
 }
