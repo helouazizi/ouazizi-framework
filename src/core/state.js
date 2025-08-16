@@ -1,22 +1,50 @@
-import { getContext, incrementStateIndex } from "./context.js"
-import { Render } from "./render.js"
-
-export function useState(initialValue) {
-    const { currentComponent } = getContext()
-    const index = incrementStateIndex()
-    
-    if (!currentComponent.states) {
-        currentComponent.states = []
+// src/core/state.js
+export class State {
+    constructor(intialSate = {}) {
+        this.state = { ...intialSate }
+        this.listeners = new Map()
+        this.callack = null
     }
 
-    if (currentComponent.states[index] === undefined) {
-        currentComponent.states[index] = initialValue
+    set(key, value) {
+        this.state[key] = value;
+        this.subscribe(key, this.callack)
+        if (this.listeners.has(key)) {
+            for (const cb of this.listeners.get(key)) {
+                cb(value)
+            };
+        }
+        this.unsubscribe(key, this.callack)
     }
 
-    function setState(newValue) {
-        currentComponent.states[index] = newValue
-        Render(currentComponent.container, currentComponent.component)
+    setContext(key, value) {
+        this.state[key] = value
     }
 
-    return [currentComponent.states[index], setState]
+    setStet(callack) {
+        this.callack = callack;
+    }
+    get(key) {
+        return this.state[key]
+    }
+    getState() {
+        return { ...this.state };
+    }
+
+    subscribe(key, callback) {
+
+        if (!this.listeners.has(key)) {
+            this.listeners.set(key, []);
+        }
+        this.listeners.get(key).push(callback);
+    }
+
+    unsubscribe(key, callback) {
+        if (this.listeners.has(key)) {
+            const index = this.listeners.get(key).indexOf(callback);
+            if (index !== -1) {
+                this.listeners.get(key).splice(index, 1);
+            }
+        }
+    }
 }

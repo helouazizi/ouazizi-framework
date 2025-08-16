@@ -3,16 +3,29 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mini Framework User App</title>
-  <link rel="stylesheet" href="./public/css/style.css">
-  <link rel="icon" href="./public/icons/favicon.ico">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./public/css/style.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./public/icons/favicon.ico" />
 </head>
 
 <body>
-  <script type="module" src="./main.js"></script>
-
-  <noscript>please enbale js code </noscript>
+  <!-- App Root -->
   <div id="root"></div>
+
+  <!-- Fallback if JavaScript is disabled -->
+  <noscript>
+    <p style="text-align:center; margin-top:2rem; font-size:1.2rem; color:red;">
+      ⚠️ Please enable JavaScript to run this app.
+    </p>
+  </noscript>
+
+  <!-- Main App Script -->
+  <script type="module" src="./main.js"></script>
 </body>
 
 </html>

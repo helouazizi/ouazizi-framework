@@ -1,14 +1,9 @@
-export function Footer(state) {
+// app/components/Footer.js
 
+export function Footer() {
   return {
     tag: 'footer',
-    attrs: { class: 'footer' },
-    children: [
-      {
-        tag: 'p',
-        attrs: { class: 'footer-text' },
-        text: '© 2023 Mini App. All rights reserved.'
-      }]
-
+    attrs: { class: "footer" },
+    text: "🌐 Built with my custom JS framework"
   }
 }

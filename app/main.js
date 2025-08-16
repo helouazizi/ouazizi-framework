@@ -1,15 +1,27 @@
-// main.js
+// app/main.js
+import {
+  State,
+  Router,
+  Renderer
+} from '../src/index.js';
 
-import { Routing } from "../src/index.js"
-import { Counter } from "./components/Home.js"
-import { About } from "./components/About.js"
 
-const routes = {
-  
-  "/": Counter,
-  "/about": About,
+import App from './app.js';
+
+const renderer = new Renderer();
+
+export const state = new State();
+
+state.setStet(renderApp)
+
+export function renderApp() {
+  renderer.render('#root', App());
 }
 
-const root = document.getElementById("root")
+new Router({
+  '/': () => {
+    renderApp();
+  },
+});
 
-Routing(root, routes)
+
