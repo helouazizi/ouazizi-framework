@@ -1,14 +1,50 @@
-# Mini Framework
+# FlashUI
 
-## Structure
+Welcome to **FlashUI**, a lightweight JavaScript framework for building interactive web applications. FlashUI abstracts the DOM, manages application state, handles events, and provides a simple routing system—all without relying on other frameworks like React, Vue, or Angular.
 
-- `src/`:  mini-framework source code (vanilla JS)
-- `app/`: user application code, imports the framework from `src/`
-
-## How to run
-
-1. Update your app in `app/main.js`.
-2. See your app using your mini-framework! server by [./runner]
 ---
 
-Enjoy building your app!
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Creating Elements](#creating-elements)
+- [Nesting Elements](#nesting-elements)
+- [Adding Attributes](#adding-attributes)
+- [Event Handling](#event-handling)
+- [State Management](#state-management)
+- [Routing System](#routing-system)
+- [TodoMVC Example](#todomvc-example)
+- [Why FlashUI Works the Way It Does](#why-flashui-works-the-way-it-does)
+
+---
+
+## Introduction
+
+FlashUI is designed to simplify front-end development by providing:
+
+- **Virtual DOM** – Efficiently updates only the parts of the DOM that change.  
+- **State Management** – Centralized state accessible across components.  
+- **Routing System** – Synchronizes the URL with the application state.  
+- **Event Handling** – Custom API for user interactions.  
+
+FlashUI is perfect for building single-page applications (SPA) and dynamic web interfaces without relying on third-party frameworks.
+
+---
+
+## Key Features
+
+1. **Abstracted DOM** – Work with JavaScript objects instead of direct DOM manipulation.  
+2. **Virtual DOM Updates** – Minimize unnecessary DOM re-renders.  
+3. **Data Binding** – Keep UI and state synchronized automatically.  
+4. **Custom Event API** – Attach events through FlashUI’s API.  
+5. **Routing System** – Easily manage page navigation.  
+6. **State Management** – Centralized store accessible throughout the app.  
+
+---
+
+## Installation
+
+Include FlashUI in your project:
+
