@@ -1,4 +1,3 @@
-// app/main.js
 import {
   State,
   Router,

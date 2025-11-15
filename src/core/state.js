@@ -1,4 +1,3 @@
-// src/core/state.js
 export class State {
     constructor(intialSate = {}) {
         this.state = { ...intialSate }
