@@ -22,7 +22,7 @@ export function Header() {
         attrs: { class: 'header-nav' },
         children: [
           { tag: 'a', attrs: { href: '/' }, text: 'Home' },
-          { tag: 'a', attrs: { href: '/docs' }, text: 'Docs' },
+          { tag: 'a', attrs: { href: 'https://helouazizi.github.io/FlashUI/' }, text: 'Docs', target: '_blank' },
           {
             tag: 'a',
             attrs: { href: 'https://github.com/helouazizi/mini-framework', class: 'github-icon', target: '_blank' },
