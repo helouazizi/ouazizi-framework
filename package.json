@@ -1,6 +1,6 @@
 {
   "name": "@helouazizi/flashui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Official FlashUI project template — create full apps in one command ⚡",
   "bin": {
     "flashui": "./index.js"
@@ -18,7 +18,13 @@
   "scripts": {
     "dev": "node server.js"
   },
-  "keywords": ["flashui", "framework", "template", "starter", "virtual-dom"],
+  "keywords": [
+    "flashui",
+    "framework",
+    "template",
+    "starter",
+    "virtual-dom"
+  ],
   "author": "helouazizi",
   "license": "MIT",
   "repository": {
