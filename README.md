@@ -1,4 +1,5 @@
-# FlashUI
+# FlashUI — A Lightning-Fast Virtual DOM Framework ⚡️
+
 
 Welcome to **FlashUI**, a lightweight JavaScript framework for building interactive web applications. FlashUI abstracts the DOM, manages application state, handles events, and provides a simple routing system—all without relying on other frameworks like React, Vue, or Angular.
 
@@ -202,3 +203,4 @@ function App() {
 const renderer = new Renderer();
 renderer.render(document.body, App());
 ```
+

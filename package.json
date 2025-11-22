@@ -1,19 +1,43 @@
 {
-  "name": "h-mini",
-  "version": "1.0.2",
-  "description": "## Structure",
-  "main": "server.js",
+  "name": "@helouazizi/flashui",
+  "version": "1.0.0",
+  "description": "FlashUI — A lightweight Virtual DOM framework with state management, routing & custom events. Built from scratch with love.",
+  "main": "dist/flashui.js",
+  "module": "src/index.js",
+  "unpkg": "dist/flashui.min.js",
+  "jsdelivr": "dist/flashui.min.js",
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "scripts": {
+    "build": "npm run bundle && npm run minify",
+    "bundle": "esbuild src/index.js --bundle --outfile=dist/flashui.js --format=iife --global-name=FlashUI",
+    "minify": "esbuild src/index.js --bundle --minify --outfile=dist/flashui.min.js --format=iife --global-name=FlashUI",
+    "prepublishOnly": "npm run build",
     "start": "node server.js"
   },
+  "keywords": [
+    "virtual-dom",
+    "framework",
+    "lightweight",
+    "state-management",
+    "router",
+    "vanilla-js",
+    "todomvc",
+    "flashui"
+  ],
+  "author": "helouazizi",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/helouazizi/h-mini.git"
+    "url": "git+https://github.com/helouazizi/FlashUI.git"
   },
-  "author": "helouaziz",
-  "license": "ISC",
+  "homepage": "https://github.com/helouazizi/FlashUI#readme",
   "bugs": {
-    "url": "https://github.com/helouazizi/h-mini/issues"
+    "url": "https://github.com/helouazizi/FlashUI/issues"
   },
-  "homepage": "https://github.com/helouazizi/h-mini#readme"
+  "devDependencies": {
+    "esbuild": "^0.21.5"
+  }
 }
