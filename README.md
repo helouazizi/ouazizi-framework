@@ -37,10 +37,10 @@ FlashUI is perfect for building single-page applications (SPA) and dynamic web i
 
 1. **Abstracted DOM** – Work with JavaScript objects instead of direct DOM manipulation.  
 2. **Virtual DOM Updates** – Minimize unnecessary DOM re-renders.  
-3. **Data Binding** – Keep UI and state synchronized automatically.  
+3. **State Management** – Centralized store accessible throughout the app. 
 4. **Custom Event API** – Attach events through FlashUI’s API.  
 5. **Routing System** – Easily manage page navigation.  
-6. **State Management** – Centralized store accessible throughout the app.  
+
 
 ---
 
@@ -113,12 +113,7 @@ state.set('count', 5);
 // Multiple properties
 state.set('todos', [newTodo, ...state.get('todos')]);
 ```
-## React to Changes
-```javascript
-state.subscribe(['count', 'todos'], () => {
-  renderer.render(document.body, App());
-});
-```
+
 
 
 # Event Handling
