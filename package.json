@@ -1,9 +1,9 @@
 {
-  "name": "create-flashui",
+  "name": "flashui",
   "version": "1.0.0",
-  "description": "Instantly create a new FlashUI project — just edit the app/ folder!",
+  "description": "FlashUI — lightning-fast framework + full project template ⚡",
   "bin": {
-    "create-flashui": "./index.js"
+    "flashui": "./index.js"
   },
   "files": [
     "app",
@@ -15,16 +15,12 @@
     "README.md",
     "package.json"
   ],
-  "keywords": ["flashui", "framework", "starter", "template", "vanilla"],
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "keywords": ["flashui", "framework", "virtual-dom", "template"],
   "author": "helouazizi",
   "license": "MIT",
   "repository": "https://github.com/helouazizi/FlashUI",
-  "homepage": "https://github.com/helouazizi/FlashUI",
-  "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "@helouazizi/flashui": "latest"
-  }
+  "homepage": "https://github.com/helouazizi/FlashUI"
 }
