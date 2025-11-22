@@ -48,3 +48,105 @@ FlashUI is perfect for building single-page applications (SPA) and dynamic web i
 
 Include FlashUI in your project:
 
+
+## Creating Elements
+Elements are plain JavaScript objects:
+
+```javascript
+// Simple div
+const myDiv = {
+  tag: 'div',
+  attrs: { class: 'container' },
+  children: [
+     {
+      tag: "h1",
+      text: "Hello World"
+     }
+  ]
+};
+
+// Button with click handler
+const myButton = {
+  tag: 'button',
+  text: 'Click Me',
+  attrs: { 
+    onclick: () => console.log('Clicked!') 
+  },
+};
+```
+
+
+# Nesting Elements
+## Use the children array to create hierarchies:
+```javascript
+const card = {
+  tag: 'div',
+  attrs: { class: 'card' },
+  children: [
+    {
+      tag: 'h2',
+      text: 'Card Title'
+    },
+    {
+      tag: 'p',
+      children: ['Card content goes here...']
+    },
+  ]
+};
+
+```
+
+# State Management
+## Initialize State
+```javascript
+const state = new State({
+  count: 0,
+  todos: [],
+  
+});
+```
+## Update State 
+```javascript
+// Single property
+state.set('count', 5);
+
+// Multiple properties
+state.set('todos', [newTodo, ...state.get('todos')]);
+```
+## React to Changes
+```javascript
+state.subscribe(['count', 'todos'], () => {
+  renderer.render(document.body, App());
+});
+```
+
+
+# Event Handling
+## Prefix event names with on and use camelCase:
+```javascript
+const counterButton = {
+  tag: 'button',
+  text: 'Increment',
+  attrs: {
+    onclick: () => state.set('count', state.get('count') + 1)
+  },
+};
+```
+
+
+# Routing System
+## Define Routes
+```javascript
+const router = new Router({
+  '/': () => showHomePage(),
+  '/about': () => showAboutPage(),
+  '/contact': () => showContactPage()
+});
+```
+## Initialize Router
+```javascript
+window.addEventListener('DOMContentLoaded', () => {
+  router.init();
+});
+```
+
