@@ -162,3 +162,42 @@ Automatic handler cleanup
 - **Minimizes DOM operations**
 
 - **Required for dynamic lists**
+
+# Complete Example
+```javascript
+// State initialization
+const state = new State({
+  count: 0
+});
+
+// Button component
+function CounterButton() {
+  return {
+    tag: 'button',
+    text: 'Increment',
+    attrs: {
+      onclick: () => state.set('count', state.get('count') + 1)
+    },
+  };
+}
+
+// Main app
+function App() {
+  return {
+    tag: 'div',
+    children: [
+      {
+        tag: 'h1',
+        text: `Count: ${state.get('count')}`
+        attrs: {
+          onclick: CounterButton
+        }
+      }
+    ]
+  };
+}
+
+// Setup
+const renderer = new Renderer();
+renderer.render(document.body, App());
+```
