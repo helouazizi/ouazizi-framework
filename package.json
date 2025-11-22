@@ -1,6 +1,6 @@
 {
   "name": "@helouazizi/flashui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FlashUI — A lightweight Virtual DOM framework with state management, routing & custom events. Built from scratch with love.",
   "main": "dist/flashui.js",
   "module": "src/index.js",
