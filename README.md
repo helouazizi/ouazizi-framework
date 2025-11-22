@@ -14,8 +14,9 @@ Welcome to **FlashUI**, a lightweight JavaScript framework for building interact
 - [Event Handling](#event-handling)
 - [State Management](#state-management)
 - [Routing System](#routing-system)
-- [TodoMVC Example](#todomvc-example)
 - [Why FlashUI Works the Way It Does](#why-flashui-works-the-way-it-does)
+- [Complet Example](#complet-example)
+
 
 ---
 
@@ -138,7 +139,7 @@ const router = new Router({
 });
 ```
 
-# Why Things Work This Way
+# Why FlashUI Works the Way It Does
 ## Virtual DOM Benefits
 Performance: Batches DOM operations
 
@@ -163,7 +164,7 @@ Automatic handler cleanup
 
 - **Required for dynamic lists**
 
-# Complete Example
+# Complet Example
 ```javascript
 // State initialization
 const state = new State({
