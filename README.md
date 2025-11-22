@@ -11,7 +11,6 @@ Welcome to **FlashUI**, a lightweight JavaScript framework for building interact
 - [Installation](#installation)
 - [Creating Elements](#creating-elements)
 - [Nesting Elements](#nesting-elements)
-- [Adding Attributes](#adding-attributes)
 - [Event Handling](#event-handling)
 - [State Management](#state-management)
 - [Routing System](#routing-system)
