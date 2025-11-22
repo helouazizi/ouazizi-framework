@@ -1,9 +1,13 @@
+[![npm](https://img.shields.io/npm/v/@helouazizi/flashui?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@helouazizi/flashui)
+[![Downloads](https://img.shields.io/npm/dm/@helouazizi/flashui?style=for-the-badge)](https://www.npmjs.com/package/@helouazizi/flashui)
+
 # FlashUI — A Lightning-Fast Virtual DOM Framework ⚡️  
 
 
 Welcome to **FlashUI**, a lightweight JavaScript framework for building interactive web applications. FlashUI abstracts the DOM, manages application state, handles events, and provides a simple routing system—all without relying on other frameworks like React, Vue, or Angular.
 
 ---
+
 
 ## Table of Contents
 
