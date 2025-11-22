@@ -27,6 +27,13 @@ Welcome to **FlashUI**, a lightweight JavaScript framework for building interact
 
 ## Introduction
 
+```bash
+npx @helouazizi/flashui my-app
+cd my-app
+npm install
+npm run dev
+```
+
 FlashUI is designed to simplify front-end development by providing:
 
 - **Virtual DOM** – Efficiently updates only the parts of the DOM that change.  

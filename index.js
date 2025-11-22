@@ -30,4 +30,6 @@ npm install
 npm run dev
 
 Start coding in the app/ folder!
+
+P.S. You created this with @helouazizi/flashui-template ⚡
 `);
