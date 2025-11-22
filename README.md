@@ -27,12 +27,7 @@ Welcome to **FlashUI**, a lightweight JavaScript framework for building interact
 
 ## Introduction
 
-```bash
-npx @helouazizi/flashui my-app
-cd my-app
-npm install
-npm run dev
-```
+
 
 FlashUI is designed to simplify front-end development by providing:
 
@@ -58,7 +53,12 @@ FlashUI is perfect for building single-page applications (SPA) and dynamic web i
 
 ## Installation
 
-Include FlashUI in your project:
+```bash
+npx @helouazizi/flashui my-app
+cd my-app
+npm install
+npm run dev
+```
 
 
 ## Creating Elements
