@@ -137,3 +137,28 @@ const router = new Router({
   '/contact': () => showContactPage()
 });
 ```
+
+# Why Things Work This Way
+## Virtual DOM Benefits
+Performance: Batches DOM operations
+
+Efficiency: Only updates changed nodes
+
+Declarative: UI = f(state)
+
+## Event Delegation
+Single event listener per event type
+
+Works with dynamically created elements
+
+Automatic handler cleanup
+
+
+
+
+# Keyed Updates
+- **Preserves element state during re-renders**
+
+- **Minimizes DOM operations**
+
+- **Required for dynamic lists**
