@@ -103,6 +103,7 @@ section {
 .hero {
   padding: 5rem 2rem;
   max-width: 850px;
+  width: 90%;
   text-align: center;
   margin: 1rem auto;
 }
@@ -119,21 +120,10 @@ section {
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 2rem;
+  word-wrap: break-word;
+  /* background-color: #b5b5b5; */
 }
 
-.hero-btn {
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  padding: 0.9rem 1.6rem;
-  border-radius: .6rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: .25s;
-}
-
-.hero-btn:hover {
-  opacity: .85;
-}
 
 /*====================*
   FEATURES SECTION
@@ -141,6 +131,7 @@ section {
 .features {
   padding: 3rem 2rem;
   max-width: 1000px;
+  width: 90%;
   margin: auto;
   text-align: center;
 }
@@ -186,6 +177,7 @@ section {
 .demo-card {
   margin: auto;
   max-width: 950px;
+  width: 90%;
   padding: 2rem;
   background: var(--card-bg);
   border-radius: 1rem;
@@ -333,5 +325,8 @@ section {
     flex-direction: row;
     justify-content: center;
     gap: 1rem;
+  }
+  .demo-card {
+    padding: 1%;
   }
 }
