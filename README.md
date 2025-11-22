@@ -137,10 +137,3 @@ const router = new Router({
   '/contact': () => showContactPage()
 });
 ```
-## Initialize Router
-```javascript
-window.addEventListener('DOMContentLoaded', () => {
-  router.init();
-});
-```
-
